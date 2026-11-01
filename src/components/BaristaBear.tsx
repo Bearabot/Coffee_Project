@@ -81,12 +81,12 @@ export const BaristaBear: React.FC<BaristaBearProps> = ({
             </linearGradient>
           </defs>
 
-          {/* Ears */}
-          <circle cx="55" cy="50" r="24" fill="url(#bearFur)" stroke="#70441C" strokeWidth="2" />
-          <circle cx="55" cy="50" r="14" fill="url(#innerEar)" />
+          {/* Smaller, snug teddy ears */}
+          <circle cx="62" cy="60" r="16" fill="url(#bearFur)" stroke="#70441C" strokeWidth="2" />
+          <circle cx="62" cy="60" r="9" fill="url(#innerEar)" />
 
-          <circle cx="145" cy="50" r="24" fill="url(#bearFur)" stroke="#70441C" strokeWidth="2" />
-          <circle cx="145" cy="50" r="14" fill="url(#innerEar)" />
+          <circle cx="138" cy="60" r="16" fill="url(#bearFur)" stroke="#70441C" strokeWidth="2" />
+          <circle cx="138" cy="60" r="9" fill="url(#innerEar)" />
 
           {/* Bear Body */}
           <ellipse cx="100" cy="165" rx="55" ry="60" fill="url(#bearFur)" />
@@ -95,44 +95,56 @@ export const BaristaBear: React.FC<BaristaBearProps> = ({
           <ellipse cx="100" cy="95" rx="52" ry="46" fill="url(#bearFur)" stroke="#70441C" strokeWidth="2" />
 
           {/* Muzzle / Snout */}
-          <ellipse cx="100" cy="110" rx="26" ry="20" fill="#E8C39E" />
+          <ellipse cx="100" cy="112" rx="30" ry="23" fill="#E8C39E" />
 
-          {/* Cute Nose */}
-          <path d="M 91 100 Q 100 95 109 100 Q 100 114 91 100 Z" fill="#3D2614" />
-          {/* Nose shine */}
-          <ellipse cx="98" cy="99" rx="2" ry="1" fill="#FFFFFF" opacity="0.6" />
+          {/* Big Cute Teddy Button Nose */}
+          <path
+            d="M 85 99 Q 100 92 115 99 Q 100 121 85 99 Z"
+            fill="#2B1A0D"
+            stroke="#1C1007"
+            strokeWidth="1.5"
+          />
+          {/* Nose specular highlights */}
+          <ellipse cx="96" cy="99" rx="3.5" ry="2" fill="#FFFFFF" opacity="0.65" />
+          <circle cx="103" cy="102" r="1.2" fill="#FFFFFF" opacity="0.45" />
 
           {/* Mouth */}
-          <path d="M 100 108 L 100 116" stroke="#3D2614" strokeWidth="2" strokeLinecap="round" />
-          <path d="M 91 116 Q 100 124 109 116" fill="none" stroke="#3D2614" strokeWidth="2" strokeLinecap="round" />
+          <path d="M 100 114 L 100 122" stroke="#2B1A0D" strokeWidth="2.5" strokeLinecap="round" />
+          <path d="M 88 122 Q 100 132 112 122" fill="none" stroke="#2B1A0D" strokeWidth="2.5" strokeLinecap="round" />
 
           {/* Blush Cheeks */}
-          <ellipse cx="68" cy="112" rx="7" ry="5" fill="#E88F80" opacity="0.45" />
-          <ellipse cx="132" cy="112" rx="7" ry="5" fill="#E88F80" opacity="0.45" />
+          <ellipse cx="66" cy="114" rx="8" ry="5.5" fill="#E88F80" opacity="0.5" />
+          <ellipse cx="134" cy="114" rx="8" ry="5.5" fill="#E88F80" opacity="0.5" />
 
-          {/* Eyes (With subtle blink animation) */}
+          {/* Bigger, Expressive Luminous Eyes */}
           <g>
+            {/* Left Eye */}
             <motion.ellipse
-              cx="78"
-              cy="90"
-              rx="4.5"
-              ry="5.5"
-              fill="#241408"
+              cx="76"
+              cy="88"
+              rx="8.5"
+              ry="10"
+              fill="#201206"
               animate={{ scaleY: [1, 1, 0.1, 1, 1] }}
               transition={{ repeat: Infinity, duration: 4, times: [0, 0.9, 0.93, 0.96, 1] }}
             />
-            <circle cx="76.5" cy="88" r="1.5" fill="#FFFFFF" />
+            {/* Big glossy catchlight */}
+            <circle cx="73.5" cy="85" r="3" fill="#FFFFFF" />
+            <circle cx="79" cy="92" r="1.4" fill="#FFFFFF" opacity="0.8" />
 
+            {/* Right Eye */}
             <motion.ellipse
-              cx="122"
-              cy="90"
-              rx="4.5"
-              ry="5.5"
-              fill="#241408"
+              cx="124"
+              cy="88"
+              rx="8.5"
+              ry="10"
+              fill="#201206"
               animate={{ scaleY: [1, 1, 0.1, 1, 1] }}
               transition={{ repeat: Infinity, duration: 4, times: [0, 0.9, 0.93, 0.96, 1] }}
             />
-            <circle cx="120.5" cy="88" r="1.5" fill="#FFFFFF" />
+            {/* Big glossy catchlight */}
+            <circle cx="121.5" cy="85" r="3" fill="#FFFFFF" />
+            <circle cx="127" cy="92" r="1.4" fill="#FFFFFF" opacity="0.8" />
           </g>
 
           {/* Barista Apron Straps (Crossback Leather) */}
