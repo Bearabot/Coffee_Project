@@ -452,6 +452,7 @@ export default function App() {
         onClose={() => setIsQuizOpen(false)}
         products={PRODUCTS}
         onSelectProduct={(p) => setSelectedProduct(p)}
+        onAddToCart={handleAddToCart}
       />
 
       {/* Slide-over Cart Drawer */}
