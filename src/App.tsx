@@ -431,6 +431,7 @@ export default function App() {
       {/* Floating Barista Bear Companion (with minimize / tips) */}
       <BaristaBear
         variant="floating"
+        autoFart={activeTab !== 'shop'}
         onOpenQuiz={() => setIsQuizOpen(true)}
         onExploreShop={() => {
           setActiveTab('shop');

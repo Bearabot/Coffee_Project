@@ -7,12 +7,14 @@ interface BaristaBearProps {
   onOpenQuiz: () => void;
   onExploreShop: () => void;
   variant?: 'embedded' | 'floating';
+  autoFart?: boolean;
 }
 
 export const BaristaBear: React.FC<BaristaBearProps> = ({
   onOpenQuiz,
   onExploreShop,
   variant = 'embedded',
+  autoFart = true,
 }) => {
   const [isWaving, setIsWaving] = useState(true);
   const [speechIndex, setSpeechIndex] = useState(0);
@@ -42,14 +44,14 @@ export const BaristaBear: React.FC<BaristaBearProps> = ({
     },
   ];
 
-  // Play toot sound effect helper
-  const triggerAudioToot = () => {
-    if (!isMuted) {
+  // Farting sound to ONLY come on when the plume of gas appears
+  useEffect(() => {
+    if (isFarting && !isMuted) {
       playToot();
     }
-  };
+  }, [isFarting, isMuted]);
 
-  // Rotate greeting every 8 seconds if not dismissed
+  // Rotate greeting every 9 seconds if not dismissed
   useEffect(() => {
     const interval = setInterval(() => {
       setSpeechIndex((prev) => (prev + 1) % greetings.length);
@@ -57,17 +59,18 @@ export const BaristaBear: React.FC<BaristaBearProps> = ({
     return () => clearInterval(interval);
   }, [greetings.length]);
 
-  // Fart every 10 seconds!
+  // Fart every 10 seconds: shows plume of brown smoke, widens smile, and plays long fart sound!
   useEffect(() => {
+    if (!autoFart) return;
+
     const triggerFart = () => {
       setIsFarting(true);
-      triggerAudioToot();
       setTimeout(() => {
         setIsFarting(false);
-      }, 3200); // Plume lasts 3.2 seconds
+      }, 3500); // Plume lasts 3.5 seconds to encompass the full long dragged-out fart sound
     };
 
-    // First fart after 3 seconds so visitor sees it quickly, then every 10 seconds
+    // First fart after 3 seconds so visitor sees it promptly, then every 10 seconds
     const initialTimeout = setTimeout(triggerFart, 3000);
     const interval = setInterval(triggerFart, 10000);
 
@@ -75,7 +78,7 @@ export const BaristaBear: React.FC<BaristaBearProps> = ({
       clearTimeout(initialTimeout);
       clearInterval(interval);
     };
-  }, [isMuted]);
+  }, [autoFart]);
 
   const currentGreeting = greetings[speechIndex];
 
@@ -122,17 +125,17 @@ export const BaristaBear: React.FC<BaristaBearProps> = ({
             </radialGradient>
           </defs>
 
-          {/* Main Bear Character Group (with funny shudder when farting) */}
+          {/* Main Bear Character Group (with comical shudder when farting) */}
           <motion.g
             animate={
               isFarting
                 ? {
-                    x: [0, -2.5, 2.5, -2, 2, -1, 0],
-                    y: [0, -1, 1.5, -1, 0],
+                    x: [0, -3, 3, -2.5, 2.5, -1, 0],
+                    y: [0, -1, 2, -1, 0],
                   }
                 : {}
             }
-            transition={{ duration: 0.35, repeat: isFarting ? 5 : 0 }}
+            transition={{ duration: 0.35, repeat: isFarting ? 8 : 0 }}
           >
             {/* Smaller, snug teddy ears */}
             <circle cx="62" cy="60" r="16" fill="url(#bearFur)" stroke="#70441C" strokeWidth="2" />
@@ -161,65 +164,91 @@ export const BaristaBear: React.FC<BaristaBearProps> = ({
             <ellipse cx="96" cy="99" rx="3.5" ry="2" fill="#FFFFFF" opacity="0.65" />
             <circle cx="103" cy="102" r="1.2" fill="#FFFFFF" opacity="0.45" />
 
-            {/* Mouth */}
-            <path d="M 100 114 L 100 122" stroke="#2B1A0D" strokeWidth="2.5" strokeLinecap="round" />
-            <path d="M 88 122 Q 100 132 112 122" fill="none" stroke="#2B1A0D" strokeWidth="2.5" strokeLinecap="round" />
+            {/* Mouth: Widens cheerfully into a big beaming grin every time he farts! */}
+            {isFarting ? (
+              <g>
+                {/* Center philtrum line */}
+                <path d="M 100 114 L 100 118" stroke="#2B1A0D" strokeWidth="2.5" strokeLinecap="round" />
+                {/* Extra-wide open cheerful mouth cavity (widened from 24px to 52px across muzzle) */}
+                <path
+                  d="M 74 118 Q 100 145 126 118 Q 100 125 74 118 Z"
+                  fill="#8B2618"
+                  stroke="#2B1A0D"
+                  strokeWidth="2.5"
+                  strokeLinejoin="round"
+                />
+                {/* Cheerful rosy pink tongue inside wide grin */}
+                <path
+                  d="M 86 135 Q 100 128 114 135 Q 100 144 86 135 Z"
+                  fill="#F88F88"
+                />
+                {/* Uplifted cheeky smile corner dimples */}
+                <path d="M 72 115 Q 74 119 77 120" fill="none" stroke="#2B1A0D" strokeWidth="2.2" strokeLinecap="round" />
+                <path d="M 128 115 Q 126 119 123 120" fill="none" stroke="#2B1A0D" strokeWidth="2.2" strokeLinecap="round" />
+              </g>
+            ) : (
+              <g>
+                {/* Normal sweet teddy mouth */}
+                <path d="M 100 114 L 100 122" stroke="#2B1A0D" strokeWidth="2.5" strokeLinecap="round" />
+                <path d="M 88 122 Q 100 132 112 122" fill="none" stroke="#2B1A0D" strokeWidth="2.5" strokeLinecap="round" />
+              </g>
+            )}
 
-            {/* Blush Cheeks (flushes redder during fart) */}
+            {/* Blush Cheeks (kept and flushed vibrant rosy red during fart) */}
             <ellipse
               cx="66"
               cy="114"
-              rx="8"
-              ry="5.5"
+              rx={isFarting ? 9.5 : 8}
+              ry={isFarting ? 6.5 : 5.5}
               fill={isFarting ? '#EA5A47' : '#E88F80'}
-              opacity={isFarting ? 0.75 : 0.5}
+              opacity={isFarting ? 0.85 : 0.5}
             />
             <ellipse
               cx="134"
               cy="114"
-              rx="8"
-              ry="5.5"
+              rx={isFarting ? 9.5 : 8}
+              ry={isFarting ? 6.5 : 5.5}
               fill={isFarting ? '#EA5A47' : '#E88F80'}
-              opacity={isFarting ? 0.75 : 0.5}
+              opacity={isFarting ? 0.85 : 0.5}
             />
 
-            {/* Bigger, Expressive Luminous Eyes (with sheepish side glance during fart) */}
+            {/* Bigger, Expressive Luminous Eyes (gleeful squint & shine during fart) */}
             <g>
               {/* Left Eye */}
               <motion.ellipse
-                cx={isFarting ? 79 : 76}
+                cx={isFarting ? 78 : 76}
                 cy="88"
-                rx="8.5"
-                ry="10"
+                rx={isFarting ? 9 : 8.5}
+                ry={isFarting ? 8 : 10}
                 fill="#201206"
-                animate={isFarting ? { x: [0, 2, 0] } : { scaleY: [1, 1, 0.1, 1, 1] }}
+                animate={isFarting ? { x: [0, 1.5, 0] } : { scaleY: [1, 1, 0.1, 1, 1] }}
                 transition={
                   isFarting
-                    ? { duration: 0.6, repeat: Infinity }
+                    ? { duration: 0.5, repeat: Infinity }
                     : { repeat: Infinity, duration: 4, times: [0, 0.9, 0.93, 0.96, 1] }
                 }
               />
-              {/* Big glossy catchlight */}
-              <circle cx={isFarting ? 76.5 : 73.5} cy="85" r="3" fill="#FFFFFF" />
-              <circle cx={isFarting ? 82 : 79} cy="92" r="1.4" fill="#FFFFFF" opacity="0.8" />
+              {/* Big glossy catchlights */}
+              <circle cx={isFarting ? 75.5 : 73.5} cy="86" r="3" fill="#FFFFFF" />
+              <circle cx={isFarting ? 81 : 79} cy="91" r="1.4" fill="#FFFFFF" opacity="0.8" />
 
               {/* Right Eye */}
               <motion.ellipse
-                cx={isFarting ? 127 : 124}
+                cx={isFarting ? 126 : 124}
                 cy="88"
-                rx="8.5"
-                ry="10"
+                rx={isFarting ? 9 : 8.5}
+                ry={isFarting ? 8 : 10}
                 fill="#201206"
-                animate={isFarting ? { x: [0, 2, 0] } : { scaleY: [1, 1, 0.1, 1, 1] }}
+                animate={isFarting ? { x: [0, 1.5, 0] } : { scaleY: [1, 1, 0.1, 1, 1] }}
                 transition={
                   isFarting
-                    ? { duration: 0.6, repeat: Infinity }
+                    ? { duration: 0.5, repeat: Infinity }
                     : { repeat: Infinity, duration: 4, times: [0, 0.9, 0.93, 0.96, 1] }
                 }
               />
-              {/* Big glossy catchlight */}
-              <circle cx={isFarting ? 124.5 : 121.5} cy="85" r="3" fill="#FFFFFF" />
-              <circle cx={isFarting ? 130 : 127} cy="92" r="1.4" fill="#FFFFFF" opacity="0.8" />
+              {/* Big glossy catchlights */}
+              <circle cx={isFarting ? 123.5 : 121.5} cy="86" r="3" fill="#FFFFFF" />
+              <circle cx={isFarting ? 129 : 127} cy="91" r="1.4" fill="#FFFFFF" opacity="0.8" />
             </g>
 
           {/* Barista Apron Straps (Crossback Leather) */}
@@ -471,10 +500,12 @@ export const BaristaBear: React.FC<BaristaBearProps> = ({
             className="shrink-0 cursor-pointer transition-transform hover:scale-105 active:scale-95"
             onClick={() => {
               setIsFarting(true);
-              triggerAudioToot();
               setIsWaving(true);
+              setTimeout(() => {
+                setIsFarting(false);
+              }, 3500);
             }}
-            title="Click me to wave and toot!"
+            title="Click me to wave and fart!"
           >
             <BearIllustration size="md" />
             <span className="block text-center text-[10px] font-mono text-[#8C7D6D] mt-1">
@@ -582,10 +613,12 @@ export const BaristaBear: React.FC<BaristaBearProps> = ({
                 className="shrink-0 cursor-pointer"
                 onClick={() => {
                   setIsFarting(true);
-                  triggerAudioToot();
                   setIsWaving(true);
+                  setTimeout(() => {
+                    setIsFarting(false);
+                  }, 3500);
                 }}
-                title="Click me to wave and toot!"
+                title="Click me to wave and fart!"
               >
                 <BearIllustration size="sm" />
               </div>
