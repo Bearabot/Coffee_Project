@@ -11,6 +11,7 @@ import { CartDrawer } from './components/CartDrawer';
 import { CheckoutModal } from './components/CheckoutModal';
 import { TasteQuizModal } from './components/TasteQuizModal';
 import { Footer } from './components/Footer';
+import { BaristaBear } from './components/BaristaBear';
 import { PRODUCTS, BREW_GUIDES, JOURNAL_ARTICLES } from './data/mockData';
 import { Product, CartItem } from './types';
 
@@ -223,7 +224,19 @@ export default function App() {
             />
 
             {/* Catalog Discovery Section */}
-            <section id="catalog-section" className="py-12 sm:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <section id="catalog-section" className="py-10 sm:py-14 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              {/* Animated Teddy Bear Barista Greeting */}
+              <BaristaBear
+                variant="embedded"
+                onOpenQuiz={() => setIsQuizOpen(true)}
+                onExploreShop={() => {
+                  const el = document.getElementById('catalog-grid-top');
+                  if (el) el.scrollIntoView({ behavior: 'smooth' });
+                }}
+              />
+
+              <div id="catalog-grid-top" />
+
               {/* Category Segmented Controls & Search Toolbar */}
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-[#EAE3D4]">
                 {/* Interactive Category Tabs */}
@@ -413,6 +426,17 @@ export default function App() {
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }}
         onOpenQuiz={() => setIsQuizOpen(true)}
+      />
+
+      {/* Floating Barista Bear Companion (with minimize / tips) */}
+      <BaristaBear
+        variant="floating"
+        onOpenQuiz={() => setIsQuizOpen(true)}
+        onExploreShop={() => {
+          setActiveTab('shop');
+          const el = document.getElementById('catalog-grid-top');
+          if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }}
       />
 
       {/* Product Detail Modal (PDP) */}
