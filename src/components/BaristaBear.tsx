@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Sparkles, MessageCircle, X, Coffee, ChevronUp } from 'lucide-react';
+import { Sparkles, MessageCircle, X, Coffee, ChevronUp, Volume2, VolumeX } from 'lucide-react';
+import { playToot } from '../utils/audio';
 
 interface BaristaBearProps {
   onOpenQuiz: () => void;
@@ -18,6 +19,7 @@ export const BaristaBear: React.FC<BaristaBearProps> = ({
   const [isDismissed, setIsDismissed] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
   const [isFarting, setIsFarting] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
 
   const greetings = [
     {
@@ -40,6 +42,13 @@ export const BaristaBear: React.FC<BaristaBearProps> = ({
     },
   ];
 
+  // Play toot sound effect helper
+  const triggerAudioToot = () => {
+    if (!isMuted) {
+      playToot();
+    }
+  };
+
   // Rotate greeting every 8 seconds if not dismissed
   useEffect(() => {
     const interval = setInterval(() => {
@@ -52,6 +61,7 @@ export const BaristaBear: React.FC<BaristaBearProps> = ({
   useEffect(() => {
     const triggerFart = () => {
       setIsFarting(true);
+      triggerAudioToot();
       setTimeout(() => {
         setIsFarting(false);
       }, 3200); // Plume lasts 3.2 seconds
@@ -65,7 +75,7 @@ export const BaristaBear: React.FC<BaristaBearProps> = ({
       clearTimeout(initialTimeout);
       clearInterval(interval);
     };
-  }, []);
+  }, [isMuted]);
 
   const currentGreeting = greetings[speechIndex];
 
@@ -461,6 +471,7 @@ export const BaristaBear: React.FC<BaristaBearProps> = ({
             className="shrink-0 cursor-pointer transition-transform hover:scale-105 active:scale-95"
             onClick={() => {
               setIsFarting(true);
+              triggerAudioToot();
               setIsWaving(true);
             }}
             title="Click me to wave and toot!"
@@ -504,14 +515,25 @@ export const BaristaBear: React.FC<BaristaBearProps> = ({
             </div>
           </div>
 
-          {/* Dismiss button */}
-          <button
-            onClick={() => setIsDismissed(true)}
-            aria-label="Dismiss greeting"
-            className="self-start text-[#948574] hover:text-[#1E1B18] p-1.5 rounded-full hover:bg-[#EFE8DC] transition-colors cursor-pointer"
-          >
-            <X className="w-4 h-4" />
-          </button>
+          {/* Action buttons (Sound Toggle & Dismiss) */}
+          <div className="self-start flex items-center gap-1">
+            <button
+              onClick={() => setIsMuted(!isMuted)}
+              aria-label={isMuted ? 'Unmute sound effect' : 'Mute sound effect'}
+              title={isMuted ? 'Unmute sound effect' : 'Mute sound effect'}
+              className="text-[#948574] hover:text-[#1E1B18] p-1.5 rounded-full hover:bg-[#EFE8DC] transition-colors cursor-pointer"
+            >
+              {isMuted ? <VolumeX className="w-4 h-4 text-[#A64A4A]" /> : <Volume2 className="w-4 h-4 text-[#3E654E]" />}
+            </button>
+
+            <button
+              onClick={() => setIsDismissed(true)}
+              aria-label="Dismiss greeting"
+              className="text-[#948574] hover:text-[#1E1B18] p-1.5 rounded-full hover:bg-[#EFE8DC] transition-colors cursor-pointer"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -528,13 +550,21 @@ export const BaristaBear: React.FC<BaristaBearProps> = ({
             exit={{ opacity: 0, scale: 0.85, y: 20 }}
             className="relative bg-[#FAF7F2] border border-[#DECDB3] rounded-2xl shadow-2xl p-4 w-72 sm:w-80 flex flex-col gap-3 text-left"
           >
-            {/* Top header with close/minimize */}
+            {/* Top header with close/minimize and audio toggle */}
             <div className="flex items-center justify-between border-b border-[#EAE3D4] pb-2">
               <div className="flex items-center gap-1.5 text-xs font-mono font-bold text-[#1E1B18]">
                 <span className="w-2 h-2 rounded-full bg-[#3E654E]" />
                 <span>Bearista Stinkalot</span>
               </div>
               <div className="flex items-center gap-1">
+                <button
+                  onClick={() => setIsMuted(!isMuted)}
+                  aria-label={isMuted ? 'Unmute sound' : 'Mute sound'}
+                  className="p-1 text-[#8C7D6D] hover:text-[#1E1B18] rounded cursor-pointer"
+                  title={isMuted ? 'Unmute toot sound' : 'Mute toot sound'}
+                >
+                  {isMuted ? <VolumeX className="w-3.5 h-3.5 text-[#A64A4A]" /> : <Volume2 className="w-3.5 h-3.5 text-[#3E654E]" />}
+                </button>
                 <button
                   onClick={() => setIsMinimized(true)}
                   aria-label="Minimize companion"
@@ -552,6 +582,7 @@ export const BaristaBear: React.FC<BaristaBearProps> = ({
                 className="shrink-0 cursor-pointer"
                 onClick={() => {
                   setIsFarting(true);
+                  triggerAudioToot();
                   setIsWaving(true);
                 }}
                 title="Click me to wave and toot!"
