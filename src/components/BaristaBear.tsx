@@ -21,7 +21,7 @@ export const BaristaBear: React.FC<BaristaBearProps> = ({
   const greetings = [
     {
       title: "Welcome to Common Ground!",
-      text: "I'm Barnaby, your resident roastery bear. Fresh micro-lots roasted this morning!",
+      text: "I'm Bearista Stinkalot, your resident roastery bear. Fresh micro-lots roasted this morning!",
       action: "Find My Match",
       type: "quiz" as const,
     },
@@ -275,7 +275,7 @@ export const BaristaBear: React.FC<BaristaBearProps> = ({
           >
             <BearIllustration size="md" />
             <span className="block text-center text-[10px] font-mono text-[#8C7D6D] mt-1">
-              Barista Barnaby · EST. 2013
+              Bearista Stinkalot · EST. 2013
             </span>
           </div>
 
@@ -327,7 +327,7 @@ export const BaristaBear: React.FC<BaristaBearProps> = ({
 
   // 2. FLOATING BARISTA BEAR COMPANION (In bottom-left corner)
   return (
-    <aside aria-label="Barista Bear Companion" className="fixed bottom-5 left-5 z-40">
+    <aside aria-label="Bearista Stinkalot Companion" className="fixed bottom-5 left-5 z-40">
       <AnimatePresence>
         {!isMinimized ? (
           <motion.div
@@ -340,7 +340,7 @@ export const BaristaBear: React.FC<BaristaBearProps> = ({
             <div className="flex items-center justify-between border-b border-[#EAE3D4] pb-2">
               <div className="flex items-center gap-1.5 text-xs font-mono font-bold text-[#1E1B18]">
                 <span className="w-2 h-2 rounded-full bg-[#3E654E]" />
-                <span>Barista Barnaby</span>
+                <span>Bearista Stinkalot</span>
               </div>
               <div className="flex items-center gap-1">
                 <button
@@ -397,7 +397,7 @@ export const BaristaBear: React.FC<BaristaBearProps> = ({
             <div className="w-7 h-7 -my-1 overflow-hidden flex items-center justify-center">
               <BearIllustration size="sm" />
             </div>
-            <span>Chat with Barnaby</span>
+            <span>Chat with Bearista Stinkalot</span>
             <ChevronUp className="w-3.5 h-3.5 text-[#8C7E6E]" />
           </motion.button>
         )}
