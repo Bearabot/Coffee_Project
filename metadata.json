@@ -1,0 +1,6 @@
+{
+  "name": "Common Ground | Specialty Coffee & Tea Atelier",
+  "description": "Artisanal single-origin coffee beans, rare estate loose-leaf teas, flexible subscriptions, and interactive brewing guides inspired by Common Man Coffee Roasters and Blue Bottle.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
